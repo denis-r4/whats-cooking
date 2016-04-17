@@ -1,8 +1,24 @@
 __author__ = 'denis'
 
+
 def compute_prior(current_class_frequency, total_classes):
     return float(current_class_frequency) / float(total_classes)
 
+
+def count_w_appear_in_text_c(word, class_name, dataset_rows, dataset_answers):
+    """
+
+    :type dataset_rows: list of lists
+    """
+
+    count_w_aitc = 0  # how many times word appears in text with class C
+    count_w_itc = 0  # how many words in test with class C
+    for index in range(len(dataset_answers)):
+        if dataset_answers[index] == class_name:
+            count_w_aitc += dataset_rows[index].count(word)
+            count_w_itc += len(dataset_rows[index])
+
+    return count_w_aitc, count_w_itc
 
 
 class MultinomialNaiveBayes(object):
@@ -12,6 +28,7 @@ class MultinomialNaiveBayes(object):
         self.__vocabulary_classes = []  # All classes in a training text
         self.__classes_frequency = {}
         self.__priors = {}
+        self.__likelihoods = {}
 
     def train(self, rows, answers):
         # TODO refactor this method before...
@@ -51,21 +68,44 @@ class MultinomialNaiveBayes(object):
 
 
 
+        # TODO don't forget to fix problem with unknown word that comes from testing set
+
         # 3. Compute likelihoods
+        vocabulary_size = len(self.__vocabulary_words)
+
+        for class_name in self.__vocabulary_classes:
+
+            likelihood_per_class = {}
+
+            for word in self.__vocabulary_words:
+
+                count_w_aitc, count_w_itc = count_w_appear_in_text_c(word, class_name, rows, answers)
+
+                vocabulary_volume = len(self.__vocabulary_words)
+                value = float(count_w_aitc + self.__alpha) / float(count_w_itc + self.__alpha * vocabulary_volume)
+
+                likelihood_per_class.update({word: value})
+
+            self.__likelihoods.update({class_name: likelihood_per_class})
+
+        #just a little bit test
+        print(self.__likelihoods["italian"]["sea salt"])
 
 
-    def predict(self, rows):
-        pass
+def predict(self, rows):
+    pass
 
 
-    def load_model(self, file_name):
-        pass
+def load_model(self, file_name):
+    pass
 
-    def save_model(self, file_name):
-        pass
 
-    def __str__(self):
-        description = "Here is a description of NB and some statistic..."
-        return description
+def save_model(self, file_name):
+    pass
+
+
+def __str__(self):
+    description = "Here is a description of NB and some statistic..."
+    return description
 
 
