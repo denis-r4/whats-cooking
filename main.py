@@ -1,7 +1,6 @@
 __author__ = 'denis'
 
 import json
-
 import model.naive_bayes as nb
 
 
@@ -17,7 +16,7 @@ def split_dataset(data_rows, data_ans, train_portion=0.7):
 
 def main():
     try:
-        data_storage_name = "mini_data.json"
+        data_storage_name = "data.json"
 
 
         # Extracting and splitting the data
@@ -44,7 +43,6 @@ def main():
         for p_answer,t_answer in zip(predicted_answers, test_ans):
             print "Predicted answer: ", p_answer[0]
             print "True ground answer: ", t_answer
-
 
 
     except Exception, err:
