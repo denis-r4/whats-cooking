@@ -3,7 +3,7 @@ __author__ = 'denis'
 
 class MultinomialNaiveBayes(object):
     def __init__(self, alpha = 1.0):
-
+        # smoothness parameter
         self.__alpha = alpha
 
     def load_model(self, file_name):
@@ -12,10 +12,10 @@ class MultinomialNaiveBayes(object):
     def save_model(self, file_name):
         pass
 
-    def train(self):
+    def train(rows, answers):
         pass
 
-    def predict(self):
+    def predict(rows):
         pass
 
     def __str__(self):
