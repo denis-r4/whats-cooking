@@ -35,16 +35,10 @@ def main():
         train_rows, test_rows, train_ans, test_ans = split_dataset(dataset_rows, dataset_answers)
 
 
-
-        # print "train_rows len: ", len(train_rows)
-        # print "test_rows len: ", len(test_rows)
-        # print "train_ans len: ", len(train_ans)
-        # print "test_ans len: ", len(test_ans)
-
-
-
         model = nb.MultinomialNaiveBayes()
         print model
+
+        model.train(train_rows, train_ans)
 
 
 
