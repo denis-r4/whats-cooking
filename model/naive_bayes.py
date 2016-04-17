@@ -1,11 +1,14 @@
 __author__ = 'denis'
 
+import operator
+
 
 def compute_prior(current_class_frequency, total_classes):
     return float(current_class_frequency) / float(total_classes)
 
 
 def count_w_appear_in_text_c(word, class_name, dataset_rows, dataset_answers):
+    #TODO refactor this func later
     """
 
     :type dataset_rows: list of lists
@@ -89,23 +92,41 @@ class MultinomialNaiveBayes(object):
             self.__likelihoods.update({class_name: likelihood_per_class})
 
         #just a little bit test
-        print(self.__likelihoods["italian"]["sea salt"])
+        # print(self.__likelihoods["italian"]["sea salt"])
 
 
-def predict(self, rows):
-    pass
 
 
-def load_model(self, file_name):
-    pass
+
+    def predict(self, rows):
+
+        answer_list = []
+
+        for doc_for_test in rows:
+            argmax_c = {}
+
+            for class_i in self.__vocabulary_classes:
+                estimated_likelihood = 1.0
+                for word in doc_for_test:
+                    estimated_likelihood *= self.__likelihoods[class_i][word]
+                estimated_value = self.__priors[class_i] * estimated_likelihood
+                argmax_c.update( {class_i: estimated_value } )
+
+            answer_list.append( max(argmax_c.iteritems(), key=operator.itemgetter(1)) )
+
+        return answer_list
 
 
-def save_model(self, file_name):
-    pass
+    def load_model(self, file_name):
+        pass
 
 
-def __str__(self):
-    description = "Here is a description of NB and some statistic..."
-    return description
+    def save_model(self, file_name):
+        pass
+
+
+    def __str__(self):
+        description = "Here is a description of NB and some statistic..."
+        return description
 
 

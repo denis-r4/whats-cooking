@@ -17,7 +17,7 @@ def split_dataset(data_rows, data_ans, train_portion=0.7):
 
 def main():
     try:
-        data_storage_name = "data.json"
+        data_storage_name = "mini_data.json"
 
 
         # Extracting and splitting the data
@@ -39,8 +39,11 @@ def main():
         print model
 
         model.train(train_rows, train_ans)
+        predicted_answers = model.predict(test_rows)
 
-
+        for p_answer,t_answer in zip(predicted_answers, test_ans):
+            print "Predicted answer: ", p_answer[0]
+            print "True ground answer: ", t_answer
 
 
 
