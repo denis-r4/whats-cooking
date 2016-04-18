@@ -5,7 +5,22 @@
     without precision, recall and F.
     
     Requirements: See https://github.com/denis-r4/whats-cooking/blob/master/requirements.txt
-    Usage: python main.py
+    ********
+    Ubuntu 14.04 LTS
+	git
+	python 2.7
+    ********
+    
+    
+    Usage:
+    ********
+    mkdir <your_test_dir>
+    cd <your_test_dir>
+    git clone https://github.com/denis-r4/whats-cooking
+    cd whats-cooking
+    python main.py
+    ********
+    
     Note: source_data.json should be in the same folder as the main.py
 
     Here is still a lot of work:
