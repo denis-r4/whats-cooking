@@ -1,7 +1,7 @@
 __author__ = 'denis'
 
 import operator
-
+import accuracy_metrics
 
 def compute_prior(current_class_frequency, total_classes):
     return float(current_class_frequency) / float(total_classes)
@@ -23,6 +23,8 @@ def count_w_appear_in_text_c(word, class_name, dataset_rows, dataset_answers):
 class MultinomialNaiveBayes(object):
     def __init__(self, alpha=1.0):
         self.__alpha = alpha  # smoothness parameter
+
+        # Classifier data:
         self.__vocabulary_words = []  # All unique words in a training text
         self.__vocabulary_classes = []  # All classes in a training text
         self.__classes_frequency = {}
@@ -30,18 +32,19 @@ class MultinomialNaiveBayes(object):
         self.__likelihoods = {}
 
         self.__unknown_word = "unknown"  # Label for word that haven't been in training set
+        self.__is_classifier_loaded = False
 
     def train(self, rows, answers):
-        # TODO refactor this method after...
+        # TODO refactor this method after.
+        # TODO add accuracy estimation on training stage.
+        print "Training started..."
 
+        print "Extracting vocabulary..."
         # 1. Extract vocabulary (unique words) and classes names and their frequencies.
         for row in rows:
             for word in row:
-                if not (word in self.__vocabulary_words):  # if (vocabulary.count(word_j) == 0):
+                if not (word in self.__vocabulary_words):
                     self.__vocabulary_words.append(word)
-
-        # print "Vocabulary: ", vocabulary_words
-        print "Vocabulary size: ", len(self.__vocabulary_words)
 
         for word in answers:
             if not (word in self.__vocabulary_classes):
@@ -51,11 +54,12 @@ class MultinomialNaiveBayes(object):
             frequency = answers.count(word)
             self.__classes_frequency.update({word: frequency})
 
-        # print "Classes frequency: ", classes_frequency
+        print "Vocabulary size: ", len(self.__vocabulary_words)
         print "Amount of classes: ", len(self.__classes_frequency)
+        print "Done."
 
 
-
+        print "Computing priors..."
         # 2. Compute priors
         dataset_size = len(answers)
 
@@ -64,15 +68,15 @@ class MultinomialNaiveBayes(object):
             prior = compute_prior(frequency, dataset_size)
             self.__priors.update({class_name: prior})
 
-        # print "Priors: ", priors
         print "Priors size: ", len(self.__priors)
+        print "Done."
 
-
+        print "Computing likelihoods..."
         # 3. Compute likelihoods
-
         vocabulary_volume = len(self.__vocabulary_words)
 
         for class_name in self.__vocabulary_classes:
+            print "Computing likelihoods for class: ", class_name
 
             likelihood_per_class = {}
 
@@ -90,11 +94,13 @@ class MultinomialNaiveBayes(object):
 
             self.__likelihoods.update({class_name: likelihood_per_class})
 
-            # just a little bit test
-            # print(self.__likelihoods["italian"]["sea salt"])
+        print "Done."
+        self.__is_classifier_loaded = True
 
 
-    def predict(self, rows):
+    def predict(self, rows, default=None):
+        if not self.__is_classifier_loaded:
+            return default
 
         answer_list = []
 
@@ -128,5 +134,3 @@ class MultinomialNaiveBayes(object):
     def __str__(self):
         description = "Here is a description of NB and some statistic..."
         return description
-
-
