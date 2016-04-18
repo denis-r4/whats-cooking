@@ -3,9 +3,10 @@
     based on a multinomial naive bayes classifier. Source dataset contains 20 classes,
     simple test shows overall accuracy - 73.03%, but it's not very informative accuracy metric
     without precision, recall and F.
-
+    
+    Requirements: See https://github.com/denis-r4/whats-cooking/blob/master/requirements.txt
     Usage: python main.py
-    source_data.json should be in the same folder as the main.py
+    Note: source_data.json should be in the same folder as the main.py
 
     Here is still a lot of work:
     1) save/load model
